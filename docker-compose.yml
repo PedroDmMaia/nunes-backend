@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  api-nunes-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=nunes
+      - POSTGRESQL_PASSWORD=nunes
+      - POSTGRESQL_DATABASE=apinunes
