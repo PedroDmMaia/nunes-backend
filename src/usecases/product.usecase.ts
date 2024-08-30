@@ -14,27 +14,44 @@ class ProductUseCase {
   async create({
     name,
     price,
-    code,
     description,
     quantity,
     typeId,
   }: createProduct): Promise<Product> {
-    const verifyProductExists = await this.productRepository.findByCode(code)
-
-    if (verifyProductExists) {
-      throw new Error('Product already exists with the same code')
-    }
-
     const result = await this.productRepository.create({
       name,
       price,
-      code,
       description,
       quantity,
       typeId,
     })
 
     return result
+  }
+
+  async update(id: string, data: Partial<createProduct>): Promise<Product> {
+    const updatedProduct = await this.productRepository.Update(id, data)
+    return updatedProduct!
+  }
+
+  async delete(id: string): Promise<void> {
+    const productExist = await this.productRepository.findById(id)
+
+    if (!productExist) {
+      throw new Error('Product not found')
+    }
+
+    await this.productRepository.Delete(id)
+  }
+
+  async searchbyName(name: string): Promise<Product[]> {
+    const products = await this.productRepository.sarchByName(name)
+    return products
+  }
+
+  async searchByCode(code: string): Promise<Product> {
+    const product = await this.productRepository.findByCode(code)
+    return product!
   }
 }
 
