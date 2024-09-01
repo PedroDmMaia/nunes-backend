@@ -19,7 +19,7 @@ model Product {
   description String
   price       Float
   quantity    Int
-  code        String      @unique // Código gerado automaticamente baseado no tipo de produto
+  code        String      @unique
   typeId      Int
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -30,8 +30,8 @@ model Product {
 
 model ProductType {
   id   Int    @id @default(autoincrement())
-  name String @unique // Nome do tipo de produto (ex: "Camiseta")
-  slug String @unique // Slug para gerar o código (ex: "C" para "Camiseta")
+  name String @unique
+  slug String
 
   products Product[]
 

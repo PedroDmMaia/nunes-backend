@@ -1,9 +1,10 @@
 import { createProduct } from '@/interfaces/product.interface'
 import { ProductUseCase } from '@/usecases/product.usecase'
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyInstance } from 'fastify'
 
 export async function productRoutes(app: FastifyInstance) {
   const productUsecase = new ProductUseCase()
+
   app.post<{ Body: createProduct }>('/', async (req, reply) => {
     const { name, description, price, quantity, typeId } = req.body
 
@@ -16,9 +17,9 @@ export async function productRoutes(app: FastifyInstance) {
         typeId,
       })
 
-      return reply.send(data)
+      return reply.status(201).send(data)
     } catch (err) {
-      reply.send(err)
+      reply.status(500).send(err)
     }
   })
 
@@ -30,9 +31,9 @@ export async function productRoutes(app: FastifyInstance) {
 
       try {
         const updatedProduct = await productUsecase.update(id, data)
-        return reply.send(updatedProduct)
+        return reply.status(200).send(updatedProduct)
       } catch (err) {
-        reply.send(err)
+        reply.status(500).send(err)
       }
     },
   )
@@ -41,8 +42,14 @@ export async function productRoutes(app: FastifyInstance) {
     const { id } = req.params
 
     try {
+      const parsedId = Number(id)
+
+      if (isNaN(parsedId)) {
+        return reply.status(400).send({ message: 'Invalid ID format' })
+      }
+
       await productUsecase.delete(id)
-      reply.status(204).send()
+      return reply.status(204).send()
     } catch (err) {
       reply.status(404).send({ message: err })
     }
@@ -53,7 +60,7 @@ export async function productRoutes(app: FastifyInstance) {
 
     try {
       const products = await productUsecase.searchbyName(name)
-      return reply.send(products)
+      return reply.status(200).send(products)
     } catch (err) {
       reply.status(500).send({ message: err })
     }
@@ -66,7 +73,7 @@ export async function productRoutes(app: FastifyInstance) {
 
       try {
         const product = await productUsecase.searchByCode(code)
-        return reply.send(product)
+        return reply.status(200).send(product)
       } catch (err) {
         reply.status(500).send({ message: err })
       }
