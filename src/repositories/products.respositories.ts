@@ -79,6 +79,14 @@ class ProductRepositoryPrisma implements ProductsRepository {
     })
     return product
   }
+
+  async returnAllProducts(): Promise<Product[]> {
+    const products = await prisma.product.findMany({
+      orderBy: { name: 'asc' },
+    })
+
+    return products
+  }
 }
 
 export { ProductRepositoryPrisma }

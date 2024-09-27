@@ -42,12 +42,6 @@ export async function productRoutes(app: FastifyInstance) {
     const { id } = req.params
 
     try {
-      const parsedId = Number(id)
-
-      if (isNaN(parsedId)) {
-        return reply.status(400).send({ message: 'Invalid ID format' })
-      }
-
       await productUsecase.delete(id)
       return reply.status(204).send()
     } catch (err) {
@@ -79,4 +73,13 @@ export async function productRoutes(app: FastifyInstance) {
       }
     },
   )
+
+  app.get('/', async (req, reply) => {
+    try {
+      const products = await productUsecase.returnAllProducts()
+      return reply.status(200).send(products)
+    } catch (err) {
+      reply.status(500).send({ message: err })
+    }
+  })
 }

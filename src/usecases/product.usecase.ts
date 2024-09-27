@@ -53,6 +53,11 @@ class ProductUseCase {
     const product = await this.productRepository.findByCode(code)
     return product!
   }
+
+  async returnAllProducts(): Promise<Product[]> {
+    const products = await this.productRepository.returnAllProducts()
+    return products
+  }
 }
 
 export { ProductUseCase }

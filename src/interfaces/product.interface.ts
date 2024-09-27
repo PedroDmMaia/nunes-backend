@@ -25,4 +25,5 @@ export interface ProductsRepository {
   findByCode(code: string): Promise<Product | null>
   findById(id: string): Promise<Product | null>
   sarchByName(name: string): Promise<Product[]>
+  returnAllProducts(): Promise<Product[]>
 }
