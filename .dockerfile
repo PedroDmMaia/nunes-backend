@@ -7,14 +7,14 @@ WORKDIR /app
 # Copia o package.json e o package-lock.json
 COPY package*.json ./
 
-# Instala as dependências
+# Instala as dependências, somente as de produção
 RUN npm install --only=production
 
 # Copia o restante da aplicação para dentro do container
 COPY . .
 
-# Expõe a porta que o Fastify vai rodar (geralmente 3000)
-EXPOSE 3000
+# Expõe a porta que o Fastify vai utilizar (porta 3333 neste caso)
+EXPOSE 3333
 
 # Comando para iniciar a aplicação
 CMD ["npm", "run", "start"]
