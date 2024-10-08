@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "seed": "ts-node prisma/seed.ts",
-    "build": "tsup src/server.ts --out-dir build",
+    "build": "tsup src/server.ts --out-dir dist",
     "start": "node dist/server.cjs"
   },
   "keywords": [],
